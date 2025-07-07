@@ -85,7 +85,7 @@ const Services = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="h-full hover:shadow-lg transition-shadow duration-300 border-0 shadow-md">
+            <Card key={index} className="h-full hover:shadow-lg transition-shadow duration-300 border-0 shadow-md relative">
               <CardHeader className="pb-4">
                 <div className="mb-4">{service.icon}</div>
                 <CardTitle className="text-xl font-bold text-gray-900 leading-tight">
@@ -95,7 +95,7 @@ const Services = () => {
                   {service.description}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col h-full">
+              <CardContent className="flex flex-col h-full pb-16">
                 <ul className="space-y-2 flex-grow">
                   {service.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-center text-sm text-gray-600">
@@ -104,11 +104,11 @@ const Services = () => {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6">
+                <div className="absolute bottom-4 right-4">
                   <Button 
                     onClick={() => handleKnowMore(service.id)}
-                    variant="outline" 
-                    className="w-full border-blue-900 text-blue-900 hover:bg-blue-50"
+                    size="sm"
+                    className="bg-blue-900 hover:bg-blue-800 text-white"
                   >
                     Know More
                   </Button>

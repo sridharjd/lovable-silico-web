@@ -1,16 +1,23 @@
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
+    setIsMenuOpen(false);
+  };
+
+  const goToPricing = () => {
+    navigate('/pricing');
     setIsMenuOpen(false);
   };
 
@@ -42,6 +49,13 @@ const Header = () => {
               className="text-gray-700 hover:text-blue-900 transition-colors font-medium"
             >
               Services
+            </button>
+            <button 
+              onClick={goToPricing}
+              className="text-gray-700 hover:text-blue-900 transition-colors font-medium flex items-center"
+            >
+              <Calculator className="h-4 w-4 mr-1" />
+              Price Calculator
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
@@ -90,6 +104,13 @@ const Header = () => {
                 className="block px-3 py-2 text-gray-700 hover:text-blue-900 transition-colors font-medium w-full text-left"
               >
                 Services
+              </button>
+              <button 
+                onClick={goToPricing}
+                className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-900 transition-colors font-medium w-full text-left"
+              >
+                <Calculator className="h-4 w-4 mr-2" />
+                Price Calculator
               </button>
               <button 
                 onClick={() => scrollToSection('contact')}
