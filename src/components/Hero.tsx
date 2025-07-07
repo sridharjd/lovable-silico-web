@@ -1,8 +1,25 @@
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Atom, Zap } from "lucide-react";
 
 const Hero = () => {
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const dynamicTexts = [
+    "In Silico Precision",
+    "In Vitro Studies", 
+    "Computational Excellence",
+    "Research Innovation"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prev) => (prev + 1) % dynamicTexts.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToContact = () => {
     const section = document.getElementById('contact');
     if (section) {
@@ -32,8 +49,8 @@ const Hero = () => {
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
               Accelerate Your Research with
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 block">
-                In Silico Precision
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 block transition-all duration-500 ease-in-out">
+                {dynamicTexts[currentTextIndex]}
               </span>
             </h1>
           </div>
