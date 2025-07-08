@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,6 +40,7 @@ const Pricing = () => {
       name: "Molecular Dynamics Simulation",
       unit: "compounds (100 nanoseconds)",
       pricePerUnit: 1500,
+      priceAdditional: 500,
       currency: "₹"
     },
     hplc: {
@@ -76,15 +76,29 @@ const Pricing = () => {
   };
 
   const handleQuantityChange = (service: string, value: string) => {
-    const numValue = Math.max(1, parseInt(value) || 1);
+    const numValue = parseInt(value);
+    const isValidNumber = !isNaN(numValue);
+
+    // Allow zero or positive numbers only
+    const finalValue = isValidNumber ? Math.max(0, numValue) : 0;
+
     setQuantities(prev => ({
       ...prev,
-      [service]: numValue
+      [service]: finalValue
     }));
   };
 
   const calculatePrice = (service: string) => {
-    return services[service as keyof typeof services].pricePerUnit * quantities[service as keyof typeof quantities];
+    const serviceData = services[service as keyof typeof services];
+    const qty = quantities[service as keyof typeof quantities];
+
+    if (service === 'md') {
+      // Special pricing for MD
+      if (qty <= 1) return serviceData.pricePerUnit;
+      return serviceData.pricePerUnit + (qty - 1) * serviceData.priceAdditional!;
+    }
+
+    return serviceData.pricePerUnit * qty;
   };
 
   const totalPrice = Object.keys(services).reduce((sum, service) => {
@@ -148,7 +162,7 @@ const Pricing = () => {
                       </label>
                       <Input
                         type="number"
-                        min="1"
+                        min="0"
                         value={quantities[key as keyof typeof quantities]}
                         onChange={(e) => handleQuantityChange(key, e.target.value)}
                         className="w-24"
